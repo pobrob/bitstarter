@@ -1,8 +1,11 @@
 var express = require('express');
-
+var fs = require('fs');
 var app = express.createServer(express.logger());
 
 app.get('/', function(request, response) {
+    fs.readFile('index.html' function (err, data){
+response.send(data);
+}
   response.send('Hello World 2!');
 });
 
