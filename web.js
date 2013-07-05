@@ -3,14 +3,14 @@ var fs = require('fs');
 var app = express.createServer(express.logger());
 
 app.get('/', function(request, response) {
-    fs.readFileSync('index.html', function (err, data){
-	if (err) throw err;
+    data = fs.readFileSync('index.html');
+	
 	console.log(data);
 	
 	respData = data.toString('utf-8');
 	response.send(respData);
 	console.log(respData);
-    });
+    
   response.send('Hello World 2!');
 });
 
