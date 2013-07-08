@@ -29,7 +29,6 @@ var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
 
 var assertFileExists = function(infile) {
-
     var instr = infile.toString();
     if(!fs.existsSync(instr)) {
         console.log("%s does not exist. Exiting.", instr);
@@ -46,15 +45,10 @@ var assertURLExists = function(url){
 	} else {
 	    $ = cheerio.load(result);
 	    var checks = loadChecks(program.checks).sort();
-	    var out = {};
-	    for(var ii in checks) {
-		var present = $(checks[ii]).length >0;
-		out[checks[ii]] = present;
-	    }
-	    console.log(out);
+	    console.log(performChecks(checks));
 	}
     }
-		    );
+		    )
     return url;
 };
 
@@ -68,19 +62,20 @@ var loadChecks = function(checksfile) {
 
 var checkHtmlFile = function(htmlfile, checksfile) {
     $ = cheerioHtmlFile(htmlfile);
-    var checks = loadChecks(checksfile).sort();
-        
+    var checks = loadChecks(checksfile).sort();    
+    return performChecks(checks);
+}; 
+
+var performChecks = function(checks){
     var out = {};
     for(var ii in checks) {
         var present = $(checks[ii]).length > 0;
         out[checks[ii]] = present;
     }
     var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
+    //console.log(outJson);
     return out;
-}; 
-
-		    
+}
 
 var clone = function(fn) {
     // Workaround for commander.js issue.
@@ -99,7 +94,6 @@ if(require.main == module) {
 	var checkJson = checkHtmlFile(program.file, program.checks);
 	var outJson = JSON.stringify(checkJson, null, 4);
 	console.log(outJson);
-console.log("end");
     }
 } else {
     exports.checkHtmlFile = checkHtmlFile;
