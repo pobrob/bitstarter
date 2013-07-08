@@ -20,14 +20,19 @@ References:
    - https://developer.mozilla.org/en-US/docs/JSON
    - https://developer.mozilla.org/en-US/docs/JSON#JSON_in_Firefox_2
 */
-
+//file system
 var fs = require('fs');
+//adds command line capability
 var program = require('commander');
+//adds jquery like dom querying
 var cheerio = require('cheerio');
+//provides restfull interface
 var rest = require('restler');
+//defaults for command line
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
 
+//command line check for file
 var assertFileExists = function(infile) {
 
     var instr = infile.toString();
@@ -38,6 +43,7 @@ var assertFileExists = function(infile) {
     return instr;
 };
 
+//command line check for url
 var assertURLExists = function(url){
     rest.get(url).on('complete', function(result){
 	if (result instanceof Error){
